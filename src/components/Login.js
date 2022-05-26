@@ -19,9 +19,13 @@ export default function Login(){
             <img src={arrow} alt="https://hugocalixto.com.br/wp-content/uploads/sites/22/2020/07/error-404-1.png" />
             <img src={shadow} alt="https://hugocalixto.com.br/wp-content/uploads/sites/22/2020/07/error-404-1.png" />
             <h1>TrackIt</h1>
-            <input type="text"  placeholder='email'/>
-            <input type="text" placeholder='senha' />
-            <button> Entrar </button>
+            <FormStyle enable ={true}>
+                <form>
+                    <input type="text"  placeholder='email'/>
+                    <input type="text" placeholder='senha' />
+                    <button> Entrar </button>
+                </form>
+            </FormStyle>
             <Link to={"/cadastro"} style ={{textDecoration:'none'}}>
                 <h2>
                     Não tem uma conta? Cadastre-se!
@@ -51,26 +55,7 @@ export const MainDiv = styled.div`
         z-index: 1;
         margin-bottom: -10px;
     }
-    input{
-        box-sizing: border-box;
-        width: 303px;
-        height: 45px;
-        left: 36px;
-        top: 279px;
-        background: #FFFFFF;
-        border: 1px solid #D5D5D5;
-        border-radius: 5px;
-        margin-bottom: 6px;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19.976px;
-        line-height: 25px;
-        padding-left: 11px;
-        ::placeholder{
-            color: #D5D5D5;
-        }
-    }
+    
     button{
         width: 303px;
         height: 45px;
@@ -99,6 +84,34 @@ export const MainDiv = styled.div`
 
 `
 
+export const FormStyle = styled.div `
+     form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    input{
+        box-sizing: border-box;
+        width: 303px;
+        height: 45px;
+        left: 36px;
+        top: 279px;
+        background:${props =>props.enable? "#FFFFFF" : "#F2F2F2" };
+        border: 1px solid #D5D5D5;
+        border-radius: 5px;
+        margin-bottom: 6px;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19.976px;
+        line-height: 25px;
+        padding-left: 11px;
+        ::placeholder{
+            color: #D5D5D5;
+        }
+    }
+`
+
 export const BarsDiv = styled.div `
     display: flex;
     align-items: center;
@@ -117,4 +130,12 @@ export const BarsDiv = styled.div `
     img:nth-child(3){
         margin-bottom: -7px;
     }
+`
+export const MainLoader = styled.div `
+    width: 303px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #52B6FF;
 `
