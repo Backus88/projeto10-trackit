@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export default function Header(props){
     return (
         <HeaderDiv>
+            <h1>TrackIt</h1>
             {props.children}
         </HeaderDiv>
     );
