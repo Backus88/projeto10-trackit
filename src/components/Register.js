@@ -42,8 +42,12 @@ export default function Register(){
             promise.catch(()=>{
                 alert("deu ruim");
                 setDisabled(false);
+                setEmail("");
+                setName("");
+                setPhoto("");
+                setPwd("");
             })
-        }, 10000);
+        }, 3000);
        
     }
     

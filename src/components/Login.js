@@ -18,6 +18,7 @@ export default function Login(){
     const [loginPwd, setLoginPwd]= useState("");
     const [disabled, setDisabled] = useState(false);
     const {token, setToken } = useContext(MainContext);
+    const navigate = useNavigate();
 
     function singIn(event){
         event.preventDefault();
@@ -31,17 +32,20 @@ export default function Login(){
         setTimeout(() => {
             setDisabled(false);
             promise.then((res)=>{
-                setToken(res.data.token);
+                const {token, image} = res.data;
+                setToken(token);
+                navigate("/hoje", {state:{image}});
                 alert("deu bom");
             } )
 
             promise.catch(()=>{
-                setDisabled(false);
                 alert("deu ruim");
+                setDisabled(false);
+                setLoginEmail("");
+                setLoginPwd("");
             })
-        }, 10000);  
+        }, 3000);  
     }
-    console.log(token);
     return(
         <MainDiv>
             <BarsDiv>
