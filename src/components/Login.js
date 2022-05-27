@@ -1,4 +1,10 @@
+import { useContext } from 'react'
+import { MainContext } from './App'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useState } from 'react'
+import { ThreeDots } from 'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import arrow from '../assets/arrow.svg'
 import shadow from '../assets/shadow.svg'
@@ -8,7 +14,34 @@ import bigBar from '../assets/biggreen.svg'
 
 export default function Login(){
     
-    
+    const [loginEmail, setLoginEmail] = useState("");
+    const [loginPwd, setLoginPwd]= useState("");
+    const [disabled, setDisabled] = useState(false);
+    const {token, setToken } = useContext(MainContext);
+
+    function singIn(event){
+        event.preventDefault();
+        setDisabled(true);
+        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+        {
+            email: loginEmail,
+            password: loginPwd
+        }
+        );
+        setTimeout(() => {
+            setDisabled(false);
+            promise.then((res)=>{
+                setToken(res.data.token);
+                alert("deu bom");
+            } )
+
+            promise.catch(()=>{
+                setDisabled(false);
+                alert("deu ruim");
+            })
+        }, 10000);  
+    }
+    console.log(token);
     return(
         <MainDiv>
             <BarsDiv>
@@ -19,13 +52,26 @@ export default function Login(){
             <img src={arrow} alt="https://hugocalixto.com.br/wp-content/uploads/sites/22/2020/07/error-404-1.png" />
             <img src={shadow} alt="https://hugocalixto.com.br/wp-content/uploads/sites/22/2020/07/error-404-1.png" />
             <h1>TrackIt</h1>
-            <FormStyle enable ={true}>
-                <form>
-                    <input type="text"  placeholder='email'/>
-                    <input type="text" placeholder='senha' />
-                    <button> Entrar </button>
-                </form>
-            </FormStyle>
+            {(disabled)?
+                <FormStyle enable ={false}>
+                    <form>
+                        <input type="text"  placeholder='email' value={loginEmail} onChange={e => setLoginEmail(e.target.value)} disabled={true} />
+                        <input type="password" placeholder='senha' value={loginPwd} onChange={e=> setLoginPwd((e.target.value))}  disabled ={true} />
+                        <MainLoader>
+                            <ThreeDots heigth="70" width="70" color="white" ariaLabel="loading" />
+                        </MainLoader>
+                    </form>
+                </FormStyle>
+                :
+                <FormStyle enable ={true}>
+                    <form onSubmit={singIn}>
+                        <input type="text"  placeholder='email' value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required />
+                        <input type="password" placeholder='senha' value={loginPwd} onChange={e=> setLoginPwd((e.target.value))}  required />
+                        <button type='submit'> Entrar </button>
+                    </form>
+                </FormStyle>
+            }
+                
             <Link to={"/cadastro"} style ={{textDecoration:'none'}}>
                 <h2>
                     Não tem uma conta? Cadastre-se!

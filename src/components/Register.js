@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Audio, ThreeDots } from 'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import arrow from '../assets/arrow.svg'
 import shadow from '../assets/shadow.svg'
@@ -63,26 +63,24 @@ export default function Register(){
                 <FormStyle enable ={false}>
                     <form >
                         <input type="text" placeholder='email' value={email} onChange={e => setEmail(e.target.value)} disabled={true} />
-                        <input type="text" placeholder='senha' value={pwd} onChange={e => setPwd(e.target.value)} disabled={true} />
+                        <input type="password" placeholder='senha' value={pwd} onChange={e => setPwd(e.target.value)} disabled={true} />
                         <input type="text" placeholder='nome' value={name} onChange={e => setName(e.target.value)} disabled={true} />
                         <input type="text" placeholder='fotos' value={photo} onChange={e => setPhoto(e.target.value)} disabled={true} />
                         <MainLoader>
                             <ThreeDots heigth="70" width="70" color="white" ariaLabel="loading" />
                         </MainLoader>
                     </form>
-                </FormStyle>
-            
+                </FormStyle>    
             :
-            <FormStyle enable ={true}>
-                <form onSubmit={register}>
-                    <input type="text" placeholder='email' value={email} onChange={e =>setEmail(e.target.value)} required  />
-                    <input type="text" placeholder='senha' value={pwd} onChange={e =>setPwd(e.target.value)} required />
-                    <input type="text" placeholder='nome'  value={name} onChange={e =>setName(e.target.value)} required  />
-                    <input type="text" placeholder='fotos'  value = {photo} onChange={e =>setPhoto(e.target.value)} required  />
-                    <button type='submit'> Cadastrar </button>
-                </form>
-            </FormStyle>
-            
+                <FormStyle enable ={true}>
+                    <form onSubmit={register}>
+                        <input type="text" placeholder='email' value={email} onChange={e =>setEmail(e.target.value)} required  />
+                        <input type="password" placeholder='senha' value={pwd} onChange={e =>setPwd(e.target.value)} required />
+                        <input type="text" placeholder='nome'  value={name} onChange={e =>setName(e.target.value)} required  />
+                        <input type="text" placeholder='fotos'  value = {photo} onChange={e =>setPhoto(e.target.value)} required  />
+                        <button type='submit'> Cadastrar </button>
+                    </form>
+                </FormStyle>
             }
             <Link to={"/"} style={{ textDecoration: 'none' }}>
                 <h2>
