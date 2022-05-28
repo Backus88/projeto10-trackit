@@ -5,8 +5,9 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FormStyle } from "./Login";
 import { MainContext } from "./App";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
+import garbage from '../assets/garbage.svg';
 
 
 export default function Habits (){
@@ -15,9 +16,16 @@ export default function Habits (){
     const [addHabit, setAddHabit] = useState(false); 
     const miniDays = ["D", "S", "T", "Q", "Q", "S", "S"];
     const[daysChoosed, setDaysChoosed] = useState([]);
+    const[listHabit, setListHabit]= useState([]);
     const[nameHabit, setNameHabit]= useState(null);
+    const[getController, setGetController]= useState(false)
     const habitNone = "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!";
     const {token} = useContext(MainContext);
+    const config ={
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    }
 
     function sendHabit(event){
         event.preventDefault();
@@ -25,21 +33,27 @@ export default function Habits (){
             name: nameHabit,
             days: daysChoosed
         } 
-        const config ={
-            headers:{
-                "Authorization": `Bearer ${token}`
-            }
-        }
-
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config);
         promise.then(()=>{
             alert('deu bom');
+            setGetController(!getController);
         })
         promise.catch(()=>{
             alert("deu ruim");
         })
-
     }
+    useEffect(()=>{
+        console.log('entrou no get');
+        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",config);
+        promise.then((res)=>{
+            console.log("deu bom");
+            setListHabit([...res.data]);
+        })
+        promise.catch(()=>{
+            console.log("deu ruim");
+        })
+    },[getController])
+
     function selectDay(index){
         console.log(index);
         if(daysChoosed.some((item)=>  index === item) ){
@@ -49,7 +63,27 @@ export default function Habits (){
             setDaysChoosed([...daysChoosed, index]);
         }  
     }
-    console.log(daysChoosed);
+
+    function listingHabits(){
+        listHabit.map((value, indexHabit)=>{
+            const {id, name, days} = value;
+
+            return(
+                <HabitItem key = {indexHabit}>
+                    <h4>{name}</h4>
+                    <RowDivEnd>
+                        {miniDays.map((item, index)=>
+                            <MiniDayDiv selected = {days.some((item)=> item ===index)} key = {index} >{item}</MiniDayDiv>
+                        )}
+                    </RowDivEnd>
+                </HabitItem>
+            )
+        })
+    }
+
+    const allHabits = listingHabits();
+
+    console.log(listHabit);
     return(
         <>
             <Header image = {image}/>
@@ -71,7 +105,7 @@ export default function Habits (){
                                     )}
                                 </RowDiv>
                                 <RowDivEnd>
-                                        <h1>Cancelar</h1>
+                                        <CancelButton onClick={()=>setAddHabit(false)}>Cancelar</CancelButton>
                                         <SaveHabit type="submit">Salvar</SaveHabit>
                                 </RowDivEnd>
                             </form>
@@ -80,7 +114,26 @@ export default function Habits (){
                    :
                    null
                 }
-
+                {(listHabit.length > 0 )?
+                  listHabit.map((value, indexHabit)=>{
+                    const {name, days} = value;
+                    return(
+                        <HabitItem key = {indexHabit}>
+                            <GarbageButton>
+                                <img src={garbage} alt="oi" />
+                            </GarbageButton>
+                            <h4>{name}</h4>
+                            <RowDiv>
+                                {miniDays.map((item, index)=>
+                                    <MiniDayDiv selected = {days.some((item)=> item ===index)} key = {index} >{item}</MiniDayDiv>
+                                )}
+                            </RowDiv>
+                        </HabitItem>
+                    )
+                })
+                :
+                <h3>{habitNone}</h3>
+                }
             </BodyDiv>
             <Footer image ={image}/>
         </>
@@ -161,14 +214,17 @@ const RowDivEnd = styled.div `
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    h1{
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 15.976px;
-        line-height: 20px;
-        color: #52B6FF;
-    }
+`
+
+const CancelButton = styled.button`
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15.976px;
+    line-height: 20px;
+    color: #52B6FF;
+    border: none;
+    background-color: rgb(0,0,0,0);
 `
 const SaveHabit = styled.button `
     width: 84px;
@@ -184,4 +240,44 @@ const SaveHabit = styled.button `
     line-height: 20px;
     text-align: center;
     color: #FFFFFF;
-    `
+    
+`
+const HabitItem = styled.div `
+    position: relative;
+    box-sizing: border-box;
+    width: 340px;
+    height: 91px;
+    padding-left: 15px;
+    padding-top: 5px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    margin-left: 15px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    h4{
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19.976px;
+        line-height: 25px;
+        color: #666666;
+        margin-bottom: 5px;
+    }
+`
+
+const GarbageButton = styled.button `
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    border: none;
+    background-color: rgb(0,0,0,0);
+    width: 13px;
+    height: 15px;
+    img{
+        width: 13px;
+        height: 15px;
+    }
+`

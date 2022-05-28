@@ -51,4 +51,15 @@ export const BodyDiv = styled.div `
         margin-left: 17px;
         padding-top: 28px;
     }
+    h3{
+        box-sizing: border-box;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17.976px;
+        line-height: 22px;
+        color: #666666;
+        padding: 19px;
+        word-break: break-word;
+    }
 `
