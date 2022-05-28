@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { FormStyle } from "./Login";
 import { MainContext } from "./App";
 import { useContext, useState } from "react";
+import axios from "axios";
 
 
 export default function Habits (){
@@ -14,11 +15,29 @@ export default function Habits (){
     const [addHabit, setAddHabit] = useState(false); 
     const miniDays = ["D", "S", "T", "Q", "Q", "S", "S"];
     const[daysChoosed, setDaysChoosed] = useState([]);
+    const[nameHabit, setNameHabit]= useState(null);
     const habitNone = "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!";
     const {token} = useContext(MainContext);
 
     function sendHabit(event){
         event.preventDefault();
+        const body = {
+            name: nameHabit,
+            days: daysChoosed
+        } 
+        const config ={
+            headers:{
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config);
+        promise.then(()=>{
+            alert('deu bom');
+        })
+        promise.catch(()=>{
+            alert("deu ruim");
+        })
 
     }
     function selectDay(index){
@@ -44,11 +63,11 @@ export default function Habits (){
                 {(addHabit) ?
                     <CreatHabit >
                         <FormStyle enable ={true}>
-                            <form>
-                                <input type="text" placeholder="nome do hábito" required />
+                            <form onSubmit={sendHabit}>
+                                <input type="text" placeholder="nome do hábito" onChange={e=> setNameHabit(e.target.value)} required />
                                 <RowDiv>
                                     {miniDays.map((item, index)=>
-                                            <MiniDayDiv key = {index} onClick={()=> selectDay(index)}>{item}</MiniDayDiv>
+                                            <MiniDayDiv selected = {daysChoosed.some((item)=> item ===index)} key = {index} onClick={()=> selectDay(index)}>{item}</MiniDayDiv>
                                     )}
                                 </RowDiv>
                                 <RowDivEnd>
@@ -112,7 +131,7 @@ const CreatHabit = styled.div `
 const MiniDayDiv = styled.div `
     width: 30px;
     height: 30px;
-    background: #FFFFFF;
+    background:${props => props.selected? "#D5D5D5" : "#FFFFFF"};
     border: 1px solid #D5D5D5;
     border-radius: 5px;
     display: flex;
@@ -124,7 +143,7 @@ const MiniDayDiv = styled.div `
     font-size: 19.976px;
     line-height: 25px;
     margin-right: 4px;
-    color: #D5D5D5;
+    color: ${props => props.selected? "#FFFFFF" : "#D5D5D5"};
 `
 const RowDiv = styled.div `
     width: 100%;
