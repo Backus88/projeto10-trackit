@@ -29,6 +29,7 @@ export default function Habits (){
 
     function sendHabit(event){
         event.preventDefault();
+        setAddHabit(false);
         const body = {
             name: nameHabit,
             days: daysChoosed
@@ -43,7 +44,6 @@ export default function Habits (){
         })
     }
     useEffect(()=>{
-        console.log('entrou no get');
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",config);
         promise.then((res)=>{
             console.log("deu bom");
@@ -55,35 +55,25 @@ export default function Habits (){
     },[getController])
 
     function selectDay(index){
-        console.log(index);
         if(daysChoosed.some((item)=>  index === item) ){
-            console.log('entrei aqui');
             setDaysChoosed(...[daysChoosed.filter((item)=> item !==index)]);
         }else{
             setDaysChoosed([...daysChoosed, index]);
         }  
     }
 
-    function listingHabits(){
-        listHabit.map((value, indexHabit)=>{
-            const {id, name, days} = value;
-
-            return(
-                <HabitItem key = {indexHabit}>
-                    <h4>{name}</h4>
-                    <RowDivEnd>
-                        {miniDays.map((item, index)=>
-                            <MiniDayDiv selected = {days.some((item)=> item ===index)} key = {index} >{item}</MiniDayDiv>
-                        )}
-                    </RowDivEnd>
-                </HabitItem>
-            )
+    function deleteHabit(id){
+        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
+        setGetController(!getController);
+        promise.then(()=>{
+            console.log('deletou');
         })
+        promise.catch(()=>{
+            console.log('nao deletou');
+        })
+
     }
 
-    const allHabits = listingHabits();
-
-    console.log(listHabit);
     return(
         <>
             <Header image = {image}/>
@@ -116,10 +106,10 @@ export default function Habits (){
                 }
                 {(listHabit.length > 0 )?
                   listHabit.map((value, indexHabit)=>{
-                    const {name, days} = value;
+                    const {id, name, days} = value;
                     return(
                         <HabitItem key = {indexHabit}>
-                            <GarbageButton>
+                            <GarbageButton onClick={()=>deleteHabit(id)}>
                                 <img src={garbage} alt="oi" />
                             </GarbageButton>
                             <h4>{name}</h4>
@@ -248,7 +238,7 @@ const HabitItem = styled.div `
     width: 340px;
     height: 91px;
     padding-left: 15px;
-    padding-top: 5px;
+    padding-top: 10px;
     background: #FFFFFF;
     border-radius: 5px;
     margin-left: 15px;
@@ -276,8 +266,5 @@ const GarbageButton = styled.button `
     background-color: rgb(0,0,0,0);
     width: 13px;
     height: 15px;
-    img{
-        width: 13px;
-        height: 15px;
-    }
+    cursor: pointer;
 `
