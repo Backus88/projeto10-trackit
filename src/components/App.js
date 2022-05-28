@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createContext, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
-import Header from "./Header";
+import Habits from "./Habits";
 import Today from "./Today";
 
 
@@ -20,6 +20,7 @@ export default function App(){
                     <Route path="/" element={<Login  />} />
                     <Route path="/cadastro" element={<Register />} />
                     <Route path="/hoje" element = {<Today/>} />
+                    <Route path = "/habitos" element ={<Habits/>} />
                 </Routes>
             </MainContext.Provider>
         </BrowserRouter>

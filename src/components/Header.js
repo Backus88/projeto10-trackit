@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-export default function Header(props){
+export default function Header({image}){
     return (
         <HeaderDiv>
             <h1>TrackIt</h1>
-            {props.children}
+            <img src={image} alt="omg" />
         </HeaderDiv>
     );
 }

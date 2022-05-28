@@ -1,14 +1,33 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 
-export default function Footer(props){
+export default function Footer({image}){
     return(
         <FooterDiv>
-            <Link to={"/"} style={{ textDecoration: 'none' }}>
+            <Link to={"/habitos"} style={{ textDecoration: 'none' }} state={{image}}>
                 <h1>Hábitos</h1>
             </Link>
-            {props.children}
-            <Link to={"/"} style={{ textDecoration: 'none' }}>
+            <ProgressBarDiv>
+                    <CircularProgressbar value={60} background={true} backgroundPadding={6} text={'Hoje'}  styles={{
+                        root:{},
+                        text :{
+                            transform:' translate(-24px, 6px)',
+                        },
+                        path:{
+                            stroke: `#fff`,
+                            strokeLinecap: 'round',
+                        },
+                        background: {
+                            fill: '#52B6FF',
+                        },
+                        trail :{
+                            stroke: 'transparent',
+                        },
+                    }         
+                    } />
+                </ProgressBarDiv>
+            <Link to={"/"} style={{ textDecoration: 'none' }} state={{image}}>
                 <h1>Histórico</h1>
             </Link>
         </FooterDiv>
@@ -37,4 +56,17 @@ const FooterDiv = styled.div `
         text-align: center;
         color: #52B6FF;
     }
+`
+
+const ProgressBarDiv = styled.div `
+    width: 91px;
+    height: 91px;
+    background-color: rgb(255 255 255 0);
+    margin-bottom: 60px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 22px;
+    fill: #FFFFFF;
 `
