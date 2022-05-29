@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import { useContext } from 'react';
+import { MainContext } from './App';
 
 export default function Footer({image}){
+    const {countHabitDone} = useContext(MainContext);
+
     return(
         <FooterDiv>
             <Link to={"/habitos"} style={{ textDecoration: 'none' }} state={{image}}>
@@ -10,7 +14,7 @@ export default function Footer({image}){
             </Link>
             <Link to={"/hoje"} style={{ textDecoration: 'none' }} state={{image}}>
                 <ProgressBarDiv>
-                        <CircularProgressbar value={60} background={true} backgroundPadding={6} text={'Hoje'}  styles={{
+                        <CircularProgressbar value={countHabitDone} background={true} backgroundPadding={6} text={'Hoje'}  styles={{
                             root:{},
                             text :{
                                 transform:' translate(-24px, 6px)',

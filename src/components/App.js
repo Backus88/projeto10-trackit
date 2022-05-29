@@ -12,10 +12,11 @@ export const MainContext = createContext();
 export default function App(){
 
     const[token, setToken]= useState(null);
+    const [countHabitDone, setCountHabitDone]= useState(0);
 
     return(
         <BrowserRouter>
-            <MainContext.Provider value ={{token, setToken}}>
+            <MainContext.Provider value ={{token, setToken, countHabitDone, setCountHabitDone}}>
                 <Routes>
                     <Route path="/" element={<Login  />} />
                     <Route path="/cadastro" element={<Register />} />
