@@ -1,7 +1,6 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import { BodyDiv } from "./Today";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FormStyle } from "./Login";
 import { MainContext } from "./App";
@@ -13,8 +12,6 @@ import { ThreeDots } from "react-loader-spinner";
 
 
 export default function Habits (){
-    const location = useLocation();
-    const {image}= location.state; 
     const [addHabit, setAddHabit] = useState(false); 
     const miniDays = ["D", "S", "T", "Q", "Q", "S", "S"];
     const[daysChoosed, setDaysChoosed] = useState([]);
@@ -90,7 +87,7 @@ export default function Habits (){
     }
     return (
         <>
-            <Header image={image} />
+            <Header />
             {(getHabit)?
             <BodyDiv>
                 <HabitsHeader >
@@ -144,7 +141,7 @@ export default function Habits (){
                         return (
                             <HabitItem key={indexHabit}>
                                 <GarbageButton onClick={() => deleteHabit(id)}>
-                                    <img src={garbage} alt="oi" />
+                                    <ion-icon name="trash-outline"></ion-icon>
                                 </GarbageButton>
                                 <h4>{name}</h4>
                                 <RowDiv>
@@ -164,7 +161,7 @@ export default function Habits (){
                     <InfinitySpin color="blue" />
             </GetHabitLoader>
             }
-            <Footer image={image} />
+            <Footer  />
         </>
     );
 
@@ -300,12 +297,16 @@ const HabitItem = styled.div `
 const GarbageButton = styled.button `
     position: absolute;
     top: 5%;
-    right: 5%;
+    right: 4%;
     border: none;
     background-color: rgb(0,0,0,0);
-    width: 13px;
-    height: 15px;
+    width: 20px;
+    height: 22px;
     cursor: pointer;
+    ion-icon{
+        width: 20px;
+        height: 22px;
+    }
 `
 
 const GetHabitLoader = styled.div`

@@ -1,6 +1,9 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { useContext } from 'react';
+import { MainContext } from './App';
 
-export default function Header({image}){
+export default function Header(){
+    const {image} = useContext(MainContext);
     return (
         <HeaderDiv>
             <h1>TrackIt</h1>

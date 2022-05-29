@@ -4,15 +4,15 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import { useContext } from 'react';
 import { MainContext } from './App';
 
-export default function Footer({image}){
+export default function Footer(){
     const {countHabitDone} = useContext(MainContext);
 
     return(
         <FooterDiv>
-            <Link to={"/habitos"} style={{ textDecoration: 'none' }} state={{image}}>
+            <Link to={"/habitos"} style={{ textDecoration: 'none' }} >
                 <h1>Hábitos</h1>
             </Link>
-            <Link to={"/hoje"} style={{ textDecoration: 'none' }} state={{image}}>
+            <Link to={"/hoje"} style={{ textDecoration: 'none' }} >
                 <ProgressBarDiv>
                         <CircularProgressbar value={countHabitDone} background={true} backgroundPadding={6} text={'Hoje'}  styles={{
                             root:{},
@@ -34,7 +34,7 @@ export default function Footer({image}){
                         } />
                     </ProgressBarDiv>
                 </Link>
-            <Link to={"/historico"} style={{ textDecoration: 'none' }} state={{image}}>
+            <Link to={"/historico"} style={{ textDecoration: 'none' }} >
                 <h1>Histórico</h1>
             </Link>
         </FooterDiv>

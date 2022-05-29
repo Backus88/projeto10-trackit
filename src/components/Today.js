@@ -1,6 +1,5 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { useLocation } from "react-router-dom";
 import { useEffect, useContext, useState } from "react";
 import styled from 'styled-components';
 import { MainContext } from "./App";
@@ -11,8 +10,6 @@ import 'dayjs/locale/pt-br';
 
 
 export default function Today(){
-    const location = useLocation();
-    const {image} = location.state;
     const [habitControler, setHabitControler]= useState(false);
     const [sequenceEqual, setSequenceEqual]= useState(false);
     const [habitData, SetHabitData]= useState([]);
@@ -96,7 +93,7 @@ export default function Today(){
     
     return(
         <>
-            <Header image = {image}/>
+            <Header />
             <BodyDiv selected ={countHabitDone}>
                 <h2>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h2>
                 {(countHabitDone ===0)?
@@ -124,7 +121,7 @@ export default function Today(){
                 }
                 
             </BodyDiv>
-            <Footer image ={image}/>
+            <Footer />
         </>
     );
 
@@ -194,7 +191,7 @@ const TodayHabit= styled.div`
 
 const ButtonHabit = styled.div`
     position:absolute;
-    top: 10%;
+    top: calc(100%-20px);
     right: 3%;
     width: 69px;
     height: 69px;

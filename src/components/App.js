@@ -14,10 +14,11 @@ export default function App(){
 
     const[token, setToken]= useState(null);
     const [countHabitDone, setCountHabitDone]= useState(0);
+    const[image, setImage]= useState("");
 
     return(
         <BrowserRouter>
-            <MainContext.Provider value ={{token, setToken, countHabitDone, setCountHabitDone}}>
+            <MainContext.Provider value ={{token, setToken, countHabitDone, setCountHabitDone,image,setImage}}>
                 <Routes>
                     <Route path="/" element={<Login  />} />
                     <Route path="/cadastro" element={<Register />} />

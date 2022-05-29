@@ -17,7 +17,7 @@ export default function Login(){
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPwd, setLoginPwd]= useState("");
     const [disabled, setDisabled] = useState(false);
-    const {setToken } = useContext(MainContext);
+    const {setToken,setImage } = useContext(MainContext);
     const navigate = useNavigate();
 
     function singIn(event){
@@ -34,7 +34,8 @@ export default function Login(){
             promise.then((res)=>{
                 const {token, image} = res.data;
                 setToken(token);
-                navigate("/hoje", {state:{image}});
+                setImage(image);
+                navigate("/hoje");
             } )
 
             promise.catch(()=>{
