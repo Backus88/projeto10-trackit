@@ -19,7 +19,7 @@ export default function Habits (){
     const miniDays = ["D", "S", "T", "Q", "Q", "S", "S"];
     const[daysChoosed, setDaysChoosed] = useState([]);
     const[listHabit, setListHabit]= useState([]);
-    const[nameHabit, setNameHabit]= useState(null);
+    const[nameHabit, setNameHabit]= useState("");
     const[getController, setGetController]= useState(false);
     const[loadingPost, setLoadingPost]= useState(false);
     const habitNone = "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!";
@@ -45,6 +45,8 @@ export default function Habits (){
             alert('deu bom');
             setGetController(!getController);
             setLoadingPost(false);
+            setNameHabit(" ");
+            setDaysChoosed([...[]]);
         })
         promise.catch(()=>{
             alert("deu ruim");
@@ -73,15 +75,17 @@ export default function Habits (){
     }
 
     function deleteHabit(id){
-        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
-        setGetController(!getController);
-        promise.then(()=>{
-            console.log('deletou');
-        })
-        promise.catch(()=>{
-            console.log('nao deletou');
-        })
-
+        const willDelete = window.confirm("Deseja mesmo deletar?")
+        if(willDelete){
+            const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
+            setGetController(!getController);
+            promise.then(()=>{
+                console.log('deletou');
+            })
+            promise.catch(()=>{
+                console.log('nao deletou');
+            })
+        }     
     }
     return (
         <>
@@ -102,7 +106,7 @@ export default function Habits (){
                                 <input type="text" placeholder="nome do hábito" onChange={e => setNameHabit(e.target.value)} disabled />
                                 <RowDiv>
                                     {miniDays.map((item, index) =>
-                                        <MiniDayDiv selected={daysChoosed.some((item) => item === index)} key={index} onClick={() => selectDay(index)}>{item}</MiniDayDiv>
+                                        <MiniDayDiv disabled selected={daysChoosed.some((item) => item === index)} key={index} onClick={() => selectDay(index)}>{item}</MiniDayDiv>
                                     )}
                                 </RowDiv>
                                 <RowDivEnd>
@@ -116,7 +120,7 @@ export default function Habits (){
                         :
                         <FormStyle enable={true}>
                             <form onSubmit={sendHabit}>
-                                <input type="text" placeholder="nome do hábito" onChange={e => setNameHabit(e.target.value)} required />
+                                <input type="text" placeholder="nome do hábito" value={nameHabit} onChange={e => setNameHabit(e.target.value)} required />
                                 <RowDiv>
                                     {miniDays.map((item, index) =>
                                         <MiniDayDiv selected={daysChoosed.some((item) => item === index)} key={index} onClick={() => selectDay(index)}>{item}</MiniDayDiv>

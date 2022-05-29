@@ -88,7 +88,7 @@ export default function Register(){
             }
             <Link to={"/"} style={{ textDecoration: 'none' }}>
                 <h2>
-                    Não tem uma conta? Cadastre-se!
+                    Já tem uma conta? Faça login!
                 </h2>
             </Link>
         </MainDiv>

@@ -8,25 +8,27 @@ export default function Footer({image}){
             <Link to={"/habitos"} style={{ textDecoration: 'none' }} state={{image}}>
                 <h1>Hábitos</h1>
             </Link>
-            <ProgressBarDiv>
-                    <CircularProgressbar value={60} background={true} backgroundPadding={6} text={'Hoje'}  styles={{
-                        root:{},
-                        text :{
-                            transform:' translate(-24px, 6px)',
-                        },
-                        path:{
-                            stroke: `#fff`,
-                            strokeLinecap: 'round',
-                        },
-                        background: {
-                            fill: '#52B6FF',
-                        },
-                        trail :{
-                            stroke: 'transparent',
-                        },
-                    }         
-                    } />
-                </ProgressBarDiv>
+            <Link to={"/hoje"} style={{ textDecoration: 'none' }} state={{image}}>
+                <ProgressBarDiv>
+                        <CircularProgressbar value={60} background={true} backgroundPadding={6} text={'Hoje'}  styles={{
+                            root:{},
+                            text :{
+                                transform:' translate(-24px, 6px)',
+                            },
+                            path:{
+                                stroke: `#fff`,
+                                strokeLinecap: 'round',
+                            },
+                            background: {
+                                fill: '#52B6FF',
+                            },
+                            trail :{
+                                stroke: 'transparent',
+                            },
+                        }         
+                        } />
+                    </ProgressBarDiv>
+                </Link>
             <Link to={"/"} style={{ textDecoration: 'none' }} state={{image}}>
                 <h1>Histórico</h1>
             </Link>
