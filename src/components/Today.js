@@ -7,14 +7,12 @@ import { MainContext } from "./App";
 import axios from "axios";
 import ok from '../assets/ok.svg'
 import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
 import 'dayjs/locale/pt-br';
 
 
 export default function Today(){
     const location = useLocation();
     const {image} = location.state;
-    // const [countHabitDone, setCountHabitDone]= useState(0);
     const [habitControler, setHabitControler]= useState(false);
     const [sequenceEqual, setSequenceEqual]= useState(false);
     const [habitData, SetHabitData]= useState([]);
@@ -44,13 +42,14 @@ export default function Today(){
         promise.then((res)=>{
             SetHabitData(res.data);
             res.data.map((item)=>{
-                const { id, name, done, currentSequence, highestSequence } = item;
+                const { done, currentSequence, highestSequence } = item;
                 if(currentSequence === highestSequence){
                     setSequenceEqual(true);
                 }
                 if(done){
                     count += 1;
                 }
+                return(true);
             });
             if(count> 0){
                 setCountHabitDone(Math.round((count*100)/res.data.length))
@@ -181,11 +180,13 @@ const TodayHabit= styled.div`
     position: relative;
     box-sizing: border-box;
     width: 340px;
-    height: 94px;
+    min-height: 94px;
+    height: auto;
     background: #FFFFFF;
     border-radius: 5px;
     margin-left: 15px;
-    margin-top: 20px;
+    margin-top: 10px;
+    padding: 7px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -230,7 +231,7 @@ const ColumnDiv = styled.div `
         font-weight: 400;
         font-size: 12.976px;
         line-height: 16px;
-        color: ${props =>props.done ? "#8FC549": "#666666" };
+        color: ${props => props.sequence? "#8FC549": props.done ? "#8FC549": "#666666"};
         padding: 0;
         margin: 0;
     }

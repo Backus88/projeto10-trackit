@@ -22,6 +22,7 @@ export default function Footer({image}){
                             path:{
                                 stroke: `#fff`,
                                 strokeLinecap: 'round',
+                                transition: 'stroke-dashoffset 0.6s ease 0.4s',
                             },
                             background: {
                                 fill: '#52B6FF',

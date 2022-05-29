@@ -17,7 +17,7 @@ export default function Login(){
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPwd, setLoginPwd]= useState("");
     const [disabled, setDisabled] = useState(false);
-    const {token, setToken } = useContext(MainContext);
+    const {setToken } = useContext(MainContext);
     const navigate = useNavigate();
 
     function singIn(event){
