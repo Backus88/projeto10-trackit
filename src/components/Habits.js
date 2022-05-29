@@ -6,7 +6,6 @@ import { FormStyle } from "./Login";
 import { MainContext } from "./App";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import garbage from '../assets/garbage.svg';
 import { InfinitySpin } from "react-loader-spinner";
 import { ThreeDots } from "react-loader-spinner";
 
@@ -17,18 +16,22 @@ export default function Habits (){
     const[daysChoosed, setDaysChoosed] = useState([]);
     const[listHabit, setListHabit]= useState([]);
     const[nameHabit, setNameHabit]= useState("");
+
+    // State used to recall the useEffect to update the habits list
     const[getController, setGetController]= useState(false);
     const[loadingPost, setLoadingPost]= useState(false);
     const habitNone = "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!";
     const {token} = useContext(MainContext);
     const [getHabit, setGetHabit]= useState(false);
 
+    // Mount the authorizathion token
     const config ={
         headers:{
             "Authorization": `Bearer ${token}`
         }
     }
 
+    // Function used to send an habit to the API
     function sendHabit(event){
         event.preventDefault();
         setLoadingPost(true);
@@ -66,6 +69,7 @@ export default function Habits (){
         })
     },[getController])
 
+    //Function used to select a day of the week
     function selectDay(index){
         if(daysChoosed.some((item)=>  index === item) ){
             setDaysChoosed(...[daysChoosed.filter((item)=> item !==index)]);
@@ -74,6 +78,7 @@ export default function Habits (){
         }  
     }
 
+    // Function used to dele an habit from the API
     function deleteHabit(id){
         const willDelete = window.confirm("Deseja mesmo deletar?")
         if(willDelete){

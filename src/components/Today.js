@@ -10,6 +10,7 @@ import 'dayjs/locale/pt-br';
 
 
 export default function Today(){
+    // State that component update by get the information in the API everytime that a post occurs 
     const [habitControler, setHabitControler]= useState(false);
     const [sequenceEqual, setSequenceEqual]= useState(false);
     const [habitData, SetHabitData]= useState([]);
@@ -32,6 +33,7 @@ export default function Today(){
     //     });
     // },[]);
 
+    // Everytime that a post occurs this effect triggers
     useEffect(()=>{
         let count = 0
         setCountHabitDone(0);
@@ -54,6 +56,7 @@ export default function Today(){
         });
     },[habitControler])
 
+    // function used to toggle the status
     function changeHabitStatus(done, id){
         if(done){
             const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {id:id} , config);

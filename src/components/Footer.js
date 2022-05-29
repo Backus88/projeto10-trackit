@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { MainContext } from './App';
 
 export default function Footer(){
+    //Receive the value of the progressbar via context
     const {countHabitDone} = useContext(MainContext);
 
     return(
@@ -17,17 +18,20 @@ export default function Footer(){
                         <CircularProgressbar value={countHabitDone} background={true} backgroundPadding={6} text={'Hoje'}  styles={{
                             root:{},
                             text :{
+                                // To centralize the text 
                                 transform:' translate(-24px, 6px)',
                             },
                             path:{
                                 stroke: `#fff`,
                                 strokeLinecap: 'round',
-                                transition: 'stroke-dashoffset 0.6s ease 0.4s',
+                                // The animation
+                                transition: 'stroke-dashoffset 0.6s ease 0.6s',
                             },
                             background: {
                                 fill: '#52B6FF',
                             },
                             trail :{
+                                // Trail is the cointainer of all path so use transparent to make trail === background color
                                 stroke: 'transparent',
                             },
                         }         

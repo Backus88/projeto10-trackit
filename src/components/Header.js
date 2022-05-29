@@ -3,6 +3,8 @@ import { useContext } from 'react';
 import { MainContext } from './App';
 
 export default function Header(){
+
+    // Receive the image from the context provider
     const {image} = useContext(MainContext);
     return (
         <HeaderDiv>
