@@ -209,7 +209,7 @@ const CreatHabit = styled.div `
     height: 180px;
     background: #FFFFFF;
     border-radius: 5px;
-    margin-left: 18px;
+    margin-left: 0px;
     margin-top: 20px;
 `
 const MiniDayDiv = styled.div `
@@ -277,18 +277,19 @@ const HabitItem = styled.div `
     position: relative;
     box-sizing: border-box;
     width: 340px;
-    height: 91px;
-    padding-left: 15px;
-    padding-top: 10px;
+    height: auto;
+    min-height: 91px;
     background: #FFFFFF;
     border-radius: 5px;
-    margin-left: 15px;
+    margin-left: 0px;
     margin-top: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     h4{
+        box-sizing: border-box;
         font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
@@ -296,6 +297,7 @@ const HabitItem = styled.div `
         line-height: 25px;
         color: #666666;
         margin-bottom: 5px;
+        padding-right:20px ;
     }
 `
 

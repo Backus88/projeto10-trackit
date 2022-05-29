@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import 'dayjs/locale/pt-br';
 
 
+
 export default function Today(){
     // State that component update by get the information in the API everytime that a post occurs 
     const [habitControler, setHabitControler]= useState(false);
@@ -36,7 +37,7 @@ export default function Today(){
     // Everytime that a post occurs this effect triggers
     useEffect(()=>{
         let count = 0
-        setCountHabitDone(0);
+        // setCountHabitDone(0);
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",config);
         promise.then((res)=>{
             SetHabitData(res.data);
@@ -52,6 +53,8 @@ export default function Today(){
             });
             if(count> 0){
                 setCountHabitDone(Math.round((count*100)/res.data.length))
+            }else{
+                setCountHabitDone(0);
             }
         });
     },[habitControler])
@@ -98,20 +101,22 @@ export default function Today(){
         <>
             <Header />
             <BodyDiv selected ={countHabitDone}>
-                <h2>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h2>
-                {(countHabitDone ===0)?
-                    <h5>Nenhum hábito concluído ainda</h5>
-                    :
-                    <h5> {countHabitDone}% dos hábitos concluídos</h5>
-                }
+                <TodayHeader>
+                    <h2>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h2>
+                    {(countHabitDone ===0)?
+                        <h5>Nenhum hábito concluído ainda</h5>
+                        :
+                        <h5> {countHabitDone}% dos hábitos concluídos</h5>
+                    }
+                </TodayHeader>
                 {(habitData) ? habitData.map((item, index) => {
                     const { id, name, done, currentSequence, highestSequence } = item;
                     return (
                         <TodayHabit key={index}>
                             <ColumnDiv done={done} sequence={sequenceEqual}>
                                 <h1>{name}</h1>
-                                <h2>Sequência atual:{currentSequence}</h2>
-                                <h3>Seu recorde:{highestSequence}</h3>
+                                <h2>Sequência atual:  <span>{ currentSequence}{ (currentSequence ===1)? " dia": " dias" }</span> </h2>
+                                <h3>Seu recorde:  <span>{ highestSequence }{ (highestSequence ===1)? " dia": " dias" }</span></h3>
                             </ColumnDiv>
                             <ButtonHabit done={done} onClick={()=>changeHabitStatus(done, id)}>
                                 <img src={ok} alt="eae" />
@@ -141,7 +146,7 @@ export const BodyDiv = styled.div `
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     h2{
         font-family: 'Lexend Deca';
@@ -184,7 +189,7 @@ const TodayHabit= styled.div`
     height: auto;
     background: #FFFFFF;
     border-radius: 5px;
-    margin-left: 15px;
+    margin-left: 0;
     margin-top: 10px;
     padding: 7px;
     display: flex;
@@ -207,14 +212,15 @@ const ButtonHabit = styled.div`
     `
 
 const ColumnDiv = styled.div `
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    margin-right: 53px;
+    margin-right: 5px;
     margin-left: 13px;
-    max-width: 200px;
-    word-break: break-word;
+    max-width: 228px;
+    /* word-break: break-word; */
     h1{
         font-family: 'Lexend Deca';
         font-style: normal;
@@ -231,9 +237,12 @@ const ColumnDiv = styled.div `
         font-weight: 400;
         font-size: 12.976px;
         line-height: 16px;
-        color: ${props => props.sequence? "#8FC549": props.done ? "#8FC549": "#666666"};
+        color: #666666;
         padding: 0;
         margin: 0;
+        span{
+            color: ${props => props.sequence? "#8FC549": props.done ? "#8FC549": "#666666"};
+        }
     }
     h3{
         font-family: 'Lexend Deca';
@@ -241,9 +250,20 @@ const ColumnDiv = styled.div `
         font-weight: 400;
         font-size: 12.976px;
         line-height: 16px;
-        color: ${props =>props.sequence ? "#8FC549": "#666666" };
+        color: #666666;
         padding: 0;
         margin: 0;
+        span{
+            color: ${props =>props.sequence ? "#8FC549": "#666666" };
+        }
     }
+`
+const TodayHeader = styled.div`
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 `
 
