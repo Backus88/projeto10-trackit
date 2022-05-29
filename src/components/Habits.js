@@ -34,34 +34,37 @@ export default function Habits (){
 
     function sendHabit(event){
         event.preventDefault();
-        // setAddHabit(false);
         setLoadingPost(true);
         const body = {
             name: nameHabit,
             days: daysChoosed
         } 
-        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config);
-        promise.then(()=>{
-            alert('deu bom');
-            setGetController(!getController);
+        if(daysChoosed.length > 0){
+            const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config);
+            promise.then(()=>{
+                setGetController(!getController);
+                setLoadingPost(false);
+                setNameHabit(" ");
+                setDaysChoosed([...[]]);
+                setAddHabit(false);
+            })
+            promise.catch((error)=>{
+                alert(error.response.data.details);
+                setLoadingPost(false);
+            })
+        }else{
+            alert("Selecione ao menos um dia");
             setLoadingPost(false);
-            setNameHabit(" ");
-            setDaysChoosed([...[]]);
-        })
-        promise.catch(()=>{
-            alert("deu ruim");
-            setLoadingPost(false);
-        })
+        }
+        
     }
     useEffect(()=>{
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",config);
         promise.then((res)=>{
-            console.log("deu bom");
             setListHabit([...res.data]);
             setGetHabit(true);
         })
         promise.catch(()=>{
-            console.log("deu ruim");
             setGetHabit(true);
         })
     },[getController])
@@ -80,10 +83,8 @@ export default function Habits (){
             const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
             setGetController(!getController);
             promise.then(()=>{
-                console.log('deletou');
             })
             promise.catch(()=>{
-                console.log('nao deletou');
             })
         }     
     }

@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import { MainContext } from "./App";
 import axios from "axios";
 import ok from '../assets/ok.svg'
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import 'dayjs/locale/pt-br';
 
 
 export default function Today(){
@@ -16,7 +19,7 @@ export default function Today(){
     const [sequenceEqual, setSequenceEqual]= useState(false);
     const [habitData, SetHabitData]= useState([]);
     const {token, countHabitDone, setCountHabitDone} = useContext(MainContext);
-    const dayjs = require('dayjs');
+    
 
     const config ={
         headers:{
@@ -24,22 +27,21 @@ export default function Today(){
         }
     }
 
-    useEffect(()=>{
-        var updateLocale = require('dayjs/plugin/updateLocale');
-        dayjs.extend(updateLocale);
-        dayjs.updateLocale('pt', {
-            weekdays: [
-              "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabádo"
-            ]
-        });
-    },[habitControler]);
+    // useEffect(()=>{
+    //     var updateLocale = require('dayjs/plugin/updateLocale');
+    //     dayjs.extend(updateLocale);
+    //     dayjs.updateLocale('pt', {
+    //         weekdays: [
+    //           "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabádo"
+    //         ]
+    //     });
+    // },[]);
 
     useEffect(()=>{
         let count = 0
         setCountHabitDone(0);
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",config);
         promise.then((res)=>{
-            console.log("entrou get");
             SetHabitData(res.data);
             res.data.map((item)=>{
                 const { id, name, done, currentSequence, highestSequence } = item;
@@ -60,13 +62,11 @@ export default function Today(){
         if(done){
             const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {id:id} , config);
             promise.then(()=>{
-                console.log("desmarcou")
                 setHabitControler(!habitControler);
             });
         }else{
             const promessa = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,{id:id}, config);
             promessa.then(()=>{
-                console.log("marcou")
                 setHabitControler(!habitControler);
             });
         }
@@ -99,7 +99,7 @@ export default function Today(){
         <>
             <Header image = {image}/>
             <BodyDiv selected ={countHabitDone}>
-                <h2>{dayjs(new Date(), 'pt', true).format('dddd, DD/MM', 'pt', true)}</h2>
+                <h2>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h2>
                 {(countHabitDone ===0)?
                     <h5>Nenhum hábito concluído ainda</h5>
                     :

@@ -35,11 +35,10 @@ export default function Login(){
                 const {token, image} = res.data;
                 setToken(token);
                 navigate("/hoje", {state:{image}});
-                alert("deu bom");
             } )
 
             promise.catch(()=>{
-                alert("deu ruim");
+                alert("Usuario ou senha incorretos");
                 setDisabled(false);
                 setLoginEmail("");
                 setLoginPwd("");

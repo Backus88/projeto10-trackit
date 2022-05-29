@@ -39,8 +39,8 @@ export default function Register(){
                 setDisabled(false);
             });
     
-            promise.catch(()=>{
-                alert("deu ruim");
+            promise.catch((error)=>{
+                alert(error.response.data.details);
                 setDisabled(false);
                 setEmail("");
                 setName("");
