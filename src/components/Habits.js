@@ -8,6 +8,8 @@ import { MainContext } from "./App";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import garbage from '../assets/garbage.svg';
+import { InfinitySpin } from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
 
 
 export default function Habits (){
@@ -18,9 +20,12 @@ export default function Habits (){
     const[daysChoosed, setDaysChoosed] = useState([]);
     const[listHabit, setListHabit]= useState([]);
     const[nameHabit, setNameHabit]= useState(null);
-    const[getController, setGetController]= useState(false)
+    const[getController, setGetController]= useState(false);
+    const[loadingPost, setLoadingPost]= useState(false);
     const habitNone = "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!";
     const {token} = useContext(MainContext);
+    const [getHabit, setGetHabit]= useState(false);
+
     const config ={
         headers:{
             "Authorization": `Bearer ${token}`
@@ -29,7 +34,8 @@ export default function Habits (){
 
     function sendHabit(event){
         event.preventDefault();
-        setAddHabit(false);
+        // setAddHabit(false);
+        setLoadingPost(true);
         const body = {
             name: nameHabit,
             days: daysChoosed
@@ -38,9 +44,11 @@ export default function Habits (){
         promise.then(()=>{
             alert('deu bom');
             setGetController(!getController);
+            setLoadingPost(false);
         })
         promise.catch(()=>{
             alert("deu ruim");
+            setLoadingPost(false);
         })
     }
     useEffect(()=>{
@@ -48,9 +56,11 @@ export default function Habits (){
         promise.then((res)=>{
             console.log("deu bom");
             setListHabit([...res.data]);
+            setGetHabit(true);
         })
         promise.catch(()=>{
             console.log("deu ruim");
+            setGetHabit(true);
         })
     },[getController])
 
@@ -73,59 +83,83 @@ export default function Habits (){
         })
 
     }
-
-    return(
+    return (
         <>
-            <Header image = {image}/>
+            <Header image={image} />
+            {(getHabit)?
             <BodyDiv>
                 <HabitsHeader >
-                        <h2> Meus Hábitos</h2>
-                        <AddHabitDiv role={"button"} onClick={()=>setAddHabit(true)}>
-                            +
-                        </AddHabitDiv>
+                    <h2> Meus Hábitos</h2>
+                    <AddHabitDiv role={"button"} onClick={() => setAddHabit(true)}>
+                        +
+                    </AddHabitDiv>
                 </HabitsHeader>
                 {(addHabit) ?
                     <CreatHabit >
-                        <FormStyle enable ={true}>
+                        {(loadingPost)?
+                        <FormStyle enable={false}>
                             <form onSubmit={sendHabit}>
-                                <input type="text" placeholder="nome do hábito" onChange={e=> setNameHabit(e.target.value)} required />
+                                <input type="text" placeholder="nome do hábito" onChange={e => setNameHabit(e.target.value)} disabled />
                                 <RowDiv>
-                                    {miniDays.map((item, index)=>
-                                            <MiniDayDiv selected = {daysChoosed.some((item)=> item ===index)} key = {index} onClick={()=> selectDay(index)}>{item}</MiniDayDiv>
+                                    {miniDays.map((item, index) =>
+                                        <MiniDayDiv selected={daysChoosed.some((item) => item === index)} key={index} onClick={() => selectDay(index)}>{item}</MiniDayDiv>
                                     )}
                                 </RowDiv>
                                 <RowDivEnd>
-                                        <CancelButton onClick={()=>setAddHabit(false)}>Cancelar</CancelButton>
-                                        <SaveHabit type="submit">Salvar</SaveHabit>
+                                    <CancelButton onClick={() => setAddHabit(false)} disabled >Cancelar</CancelButton>
+                                    <MiniLoader>
+                                        <ThreeDots heigth="35" width="35" color="white" ariaLabel="loading" />
+                                    </MiniLoader>
                                 </RowDivEnd>
                             </form>
                         </FormStyle>
+                        :
+                        <FormStyle enable={true}>
+                            <form onSubmit={sendHabit}>
+                                <input type="text" placeholder="nome do hábito" onChange={e => setNameHabit(e.target.value)} required />
+                                <RowDiv>
+                                    {miniDays.map((item, index) =>
+                                        <MiniDayDiv selected={daysChoosed.some((item) => item === index)} key={index} onClick={() => selectDay(index)}>{item}</MiniDayDiv>
+                                    )}
+                                </RowDiv>
+                                <RowDivEnd>
+                                    <CancelButton onClick={() => setAddHabit(false)}>Cancelar</CancelButton>
+                                    <SaveHabit type="submit">Salvar</SaveHabit>
+                                </RowDivEnd>
+                            </form>
+                        </FormStyle>
+                        }
                     </CreatHabit>
-                   :
-                   null
+                    :
+                    null
                 }
-                {(listHabit.length > 0 )?
-                  listHabit.map((value, indexHabit)=>{
-                    const {id, name, days} = value;
-                    return(
-                        <HabitItem key = {indexHabit}>
-                            <GarbageButton onClick={()=>deleteHabit(id)}>
-                                <img src={garbage} alt="oi" />
-                            </GarbageButton>
-                            <h4>{name}</h4>
-                            <RowDiv>
-                                {miniDays.map((item, index)=>
-                                    <MiniDayDiv selected = {days.some((item)=> item ===index)} key = {index} >{item}</MiniDayDiv>
-                                )}
-                            </RowDiv>
-                        </HabitItem>
-                    )
-                })
-                :
-                <h3>{habitNone}</h3>
+                {(listHabit.length > 0) ?
+                    listHabit.map((value, indexHabit) => {
+                        const { id, name, days } = value;
+                        return (
+                            <HabitItem key={indexHabit}>
+                                <GarbageButton onClick={() => deleteHabit(id)}>
+                                    <img src={garbage} alt="oi" />
+                                </GarbageButton>
+                                <h4>{name}</h4>
+                                <RowDiv>
+                                    {miniDays.map((item, index) =>
+                                        <MiniDayDiv selected={days.some((item) => item === index)} key={index} >{item}</MiniDayDiv>
+                                    )}
+                                </RowDiv>
+                            </HabitItem>
+                        )
+                    })
+                    :
+                    <h3>{habitNone}</h3>
                 }
             </BodyDiv>
-            <Footer image ={image}/>
+            :
+            <GetHabitLoader>
+                    <InfinitySpin color="blue" />
+            </GetHabitLoader>
+            }
+            <Footer image={image} />
         </>
     );
 
@@ -267,4 +301,24 @@ const GarbageButton = styled.button `
     width: 13px;
     height: 15px;
     cursor: pointer;
+`
+
+const GetHabitLoader = styled.div`
+    box-sizing: border-box;
+    padding-bottom: 20px;
+    width: 100%;
+    height: 100%;
+    min-height: 700px;
+    background-color: rgb(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+const MiniLoader = styled.div `
+    width: 84px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #52B6FF;
 `

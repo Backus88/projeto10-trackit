@@ -33,14 +33,16 @@ export default function Today(){
 export const BodyDiv = styled.div `
     height: 100vh;
     width: 100%;
+    min-height: 700px;
     background-color: #F2F2F2;
-    margin: 72px 0;
+    margin: 72px 0  100px;
     min-height: 700px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    overflow-y: visible;
     h2{
         font-family: 'Lexend Deca';
         font-style: normal;
