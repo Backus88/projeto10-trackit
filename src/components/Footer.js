@@ -33,7 +33,7 @@ export default function Footer({image}){
                         } />
                     </ProgressBarDiv>
                 </Link>
-            <Link to={"/"} style={{ textDecoration: 'none' }} state={{image}}>
+            <Link to={"/historico"} style={{ textDecoration: 'none' }} state={{image}}>
                 <h1>Histórico</h1>
             </Link>
         </FooterDiv>
