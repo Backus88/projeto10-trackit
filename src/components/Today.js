@@ -39,14 +39,16 @@ export default function Today(){
         let count = 0
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",config);
         promise.then((res)=>{
-            setSequenceEqual([...new Array(res.data.length).fill(false)]);
             SetHabitData(res.data);
-            res.data.map((item,index)=>{
+            const newArr = [];
+            res.data.map((item)=>{
                 const { done, currentSequence, highestSequence } = item;
                 if(currentSequence === highestSequence){
-                    const newArr = [...sequenceEqual];
-                    newArr[index] = true;
-                    setSequenceEqual(newArr);
+                    newArr.push(true);
+                   setSequenceEqual([...newArr]);
+                }else{
+                    newArr.push(false);
+                    setSequenceEqual([...newArr]);
                 }
                 if(done){
                     count += 1;
@@ -61,6 +63,7 @@ export default function Today(){
         });
     },[habitControler])
 
+    console.log(sequenceEqual);
     // function used to toggle the status
     function changeHabitStatus(done, id){
         if(done){
