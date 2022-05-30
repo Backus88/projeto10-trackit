@@ -316,9 +316,9 @@ const GarbageButton = styled.button `
     }
 `
 
-const GetHabitLoader = styled.div`
+export const GetHabitLoader = styled.div`
     box-sizing: border-box;
-    padding-bottom: 20px;
+    padding-top: 20px;
     width: 100%;
     height: 100%;
     min-height: 700px;

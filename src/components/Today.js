@@ -7,6 +7,8 @@ import axios from "axios";
 import ok from '../assets/ok.svg'
 import dayjs from "dayjs";
 import 'dayjs/locale/pt-br';
+import { GetHabitLoader } from "./Habits";
+import { InfinitySpin } from "react-loader-spinner";
 
 
 
@@ -15,6 +17,7 @@ export default function Today(){
     const [habitControler, setHabitControler]= useState(false);
     const [sequenceEqual, setSequenceEqual]= useState([]);
     const [habitData, SetHabitData]= useState([]);
+    const [getToday, setGetToday] = useState(false);
     const {token, countHabitDone, setCountHabitDone} = useContext(MainContext);
     
 
@@ -39,6 +42,7 @@ export default function Today(){
         let count = 0
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",config);
         promise.then((res)=>{
+            setGetToday(true);
             SetHabitData(res.data);
             const newArr = [];
             res.data.map((item)=>{
@@ -105,6 +109,7 @@ export default function Today(){
     return(
         <>
             <Header />
+            {(getToday)?
             <BodyDiv selected ={countHabitDone}>
                 <TodayHeader>
                     <h2>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h2>
@@ -134,6 +139,11 @@ export default function Today(){
                 }
                 
             </BodyDiv>
+            :
+            <GetHabitLoader>
+                <InfinitySpin color="blue" />
+            </GetHabitLoader>
+            }
             <Footer />
         </>
     );

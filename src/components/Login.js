@@ -11,6 +11,7 @@ import shadow from '../assets/shadow.svg'
 import smallBar from '../assets/smallgreen.svg'
 import mediumBar from '../assets/mediumred.svg'
 import bigBar from '../assets/biggreen.svg'
+import { useEffect } from 'react'
 
 export default function Login(){
     
@@ -32,6 +33,13 @@ export default function Login(){
         setTimeout(() => {
             setDisabled(false);
             promise.then((res)=>{
+                const credentials = JSON.stringify({
+                    email: loginEmail,
+                    password: loginPwd
+                });
+                
+                localStorage.setItem("credentials",credentials);
+
                 const {token, image} = res.data;
                 setToken(token);
                 setImage(image);
@@ -44,8 +52,33 @@ export default function Login(){
                 setLoginEmail("");
                 setLoginPwd("");
             })
-        }, 3000);  
+        }, 1000);  
     }
+
+    useEffect(()=>{
+        if(localStorage.length> 0){
+            const credentials = JSON.parse(localStorage.getItem("credentials"));
+            const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login" , credentials);
+            setTimeout(() => {
+                setDisabled(false);
+                promise.then((res)=>{
+                    const {token, image} = res.data;
+                    setToken(token);
+                    setImage(image);
+                    navigate("/hoje");
+                } )
+    
+                promise.catch(()=>{
+                    alert("Usuario ou senha incorretos");
+                    setDisabled(false);
+                    setLoginEmail("");
+                    setLoginPwd("");
+                })
+            }, 1000);  
+        }
+
+    },[])
+
     return(
         <MainDiv>
             <BarsDiv>

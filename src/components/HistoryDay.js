@@ -2,26 +2,30 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { BodyDiv } from "./Today";
 import { useLocation } from "react-router-dom";
-import { ColumnDiv, TodayHabit, ButtonHabit, TodayHeader } from "./Today";
+import { TodayHabit, TodayHeader } from "./Today";
 import { useState } from "react";
-import dayjs from "dayjs";
 import { useEffect } from "react";
 import styled from 'styled-components'
 import ok from '../assets/ok.svg'
+import { GetHabitLoader } from "./Habits";
+import { InfinitySpin } from "react-loader-spinner";
 
 export default function HistoryDay(){
     const location = useLocation();
     const {dataDay}= location.state;
     const {day, habits}= dataDay;
-    const[habitDay, setHabitDay]= useState([])
+    const[habitDay, setHabitDay]= useState([]);
+    const [getHistoryDay, setGetHistoryDay]= useState(false);
 
     useEffect(()=>{
         setHabitDay(habitDay);
+        setGetHistoryDay(true);
     },[])
 
     return(
         <>
             <Header/>
+            {(getHistoryDay)?
             <BodyDiv>
                 <TodayHeader>
                     <h2> Histórico do dia: {day}</h2>
@@ -32,6 +36,7 @@ export default function HistoryDay(){
                         <TodayHabit key={index}>
                             <ColumnDay done={done}>
                                 <h1>{name}</h1>
+                                {(done)? <h2> Concluído</h2> : <h2> Não Concluído</h2>}
                             </ColumnDay>
                             <ButtonDay done={done} >
                                 {(done)? <img src={ok} alt="eae" /> : <ion-icon name="close-circle"></ion-icon>}
@@ -43,6 +48,11 @@ export default function HistoryDay(){
                 null
                 }
             </BodyDiv>
+            :
+            <GetHabitLoader>
+                <InfinitySpin color="blue" />
+            </GetHabitLoader>
+            }
             <Footer/>
         </>
         
@@ -58,6 +68,7 @@ const ColumnDay = styled.div `
     margin-right: 5px;
     margin-left: 13px;
     max-width: 228px;
+    border: none;
     h1{
         font-family: 'Lexend Deca';
         font-style: normal;
@@ -67,6 +78,17 @@ const ColumnDay = styled.div `
         color: ${props => props.done ? "#8FC549": "red"} ;;
         padding: 0;
         padding-bottom: 10px;
+    }
+    h2{
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12.976px;
+        line-height: 16px;
+        color: ${props => props.done ? "#8FC549": "red"};
+        padding: 0;
+        margin: 0;
+        border: none;
     }
 
 `
@@ -78,7 +100,7 @@ const ButtonDay = styled.div`
     width: 69px;
     height: 69px;
     background:${props => props.done ? "#8FC549": "red"} ;
-    border: 1px solid #E7E7E7;
+    /* border: 1px solid red; */
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -89,5 +111,6 @@ const ButtonDay = styled.div`
         height: 69px;
         fill: red;
         background: white;
+        border: 2px solid red;
     }
 `

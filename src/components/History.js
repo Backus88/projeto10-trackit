@@ -1,11 +1,13 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import { BodyDiv, TodayHeader } from "./Today";
+import { TodayHeader } from "./Today";
 import { Calendar } from "react-calendar";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import './History.css';
+import { GetHabitLoader } from "./Habits";
+import { InfinitySpin } from "react-loader-spinner";
 // import 'react-calendar/dist/Calendar.css';
 import { MainContext } from "./App";
 import axios from "axios";
@@ -18,6 +20,7 @@ export default function History(){
     const [value, setValue] = useState(new Date());
     const {token} = useContext(MainContext);
     const [historyData, setHistoryData]= useState(null);
+    const [getHistory, setGetHistory]= useState(false);
     const [data, setData] = useState([]);
     const[habitsDone, setHabitDone]= useState([]);
     const navigate = useNavigate();
@@ -36,6 +39,7 @@ export default function History(){
         const habitAux = [];
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily", config);
         promise.then((res)=>{
+            setGetHistory(true);
             setHistoryData([...res.data]);
             res.data.map((item,index)=>{
                 let aux = true;
@@ -45,7 +49,7 @@ export default function History(){
                 habits.map((value)=>{
                     const{done} = value
                     if(done === false) aux = false;
-                    return;
+                    return true;
                 })
                 habitAux.push(aux);
                 return (setHabitDone([...habitAux]));
@@ -68,6 +72,7 @@ export default function History(){
         return(
             <>
                 <Header   />
+                {(getHistory)?
                 <CalendarDiv>
                     <TodayHeader>
                         <h2>Histórico</h2>
@@ -95,6 +100,11 @@ export default function History(){
                         
                         {/* <h5>Em breve você poderá ver o histórico dos seus hábitos aqui</h5> */}
                     </CalendarDiv>
+                    :
+                    <GetHabitLoader>
+                        <InfinitySpin color="blue" />
+                    </GetHabitLoader>
+                    }
                 <Footer  />
             </>
         )
