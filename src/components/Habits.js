@@ -106,7 +106,7 @@ export default function Habits (){
                         {(loadingPost)?
                         <FormStyle enable={false}>
                             <form onSubmit={sendHabit}>
-                                <input type="text" placeholder="nome do hábito" onChange={e => setNameHabit(e.target.value)} disabled />
+                                <input type="text" placeholder="nome do hábito"value={nameHabit} onChange={e => setNameHabit(e.target.value)} disabled />
                                 <RowDiv>
                                     {miniDays.map((item, index) =>
                                         <MiniDayDiv disabled selected={daysChoosed.some((item) => item === index)} key={index} onClick={() => selectDay(index)}>{item}</MiniDayDiv>

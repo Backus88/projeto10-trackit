@@ -63,7 +63,7 @@ export default function Today(){
         });
     },[habitControler])
 
-    console.log(sequenceEqual);
+
     // function used to toggle the status
     function changeHabitStatus(done, id){
         if(done){
@@ -186,7 +186,7 @@ export const BodyDiv = styled.div `
     }
 `
 
-const TodayHabit= styled.div`
+export const TodayHabit= styled.div`
     position: relative;
     box-sizing: border-box;
     width: 340px;
@@ -202,7 +202,7 @@ const TodayHabit= styled.div`
     justify-content: flex-start;
 `
 
-const ButtonHabit = styled.div`
+export const ButtonHabit = styled.div`
     position:absolute;
     top: calc(100%-20px);
     right: 3%;
@@ -216,7 +216,7 @@ const ButtonHabit = styled.div`
     justify-content: center;
     `
 
-const ColumnDiv = styled.div `
+ export const ColumnDiv = styled.div `
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -263,7 +263,7 @@ const ColumnDiv = styled.div `
         }
     }
 `
-const TodayHeader = styled.div`
+export const TodayHeader = styled.div`
     width: 100%;
     height: auto;
     display: flex;
