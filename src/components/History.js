@@ -1,6 +1,7 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import { BodyDiv } from "./Today";
+import { Calendar } from "react-calendar";
 
 
 export default function History(){

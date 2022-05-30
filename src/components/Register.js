@@ -66,7 +66,7 @@ export default function Register(){
             {(disabled)?
                 <FormStyle enable ={false}>
                     <form >
-                        <input type="text" placeholder='email' value={email} onChange={e => setEmail(e.target.value)} disabled={true} />
+                        <input type="email" placeholder='email' value={email} onChange={e => setEmail(e.target.value)} disabled={true} />
                         <input type="password" placeholder='senha' value={pwd} onChange={e => setPwd(e.target.value)} disabled={true} />
                         <input type="text" placeholder='nome' value={name} onChange={e => setName(e.target.value)} disabled={true} />
                         <input type="text" placeholder='fotos' value={photo} onChange={e => setPhoto(e.target.value)} disabled={true} />
@@ -78,7 +78,7 @@ export default function Register(){
             :
                 <FormStyle enable ={true}>
                     <form onSubmit={register}>
-                        <input type="text" placeholder='email' value={email} onChange={e =>setEmail(e.target.value)} required  />
+                        <input type="email" placeholder='email' value={email} onChange={e =>setEmail(e.target.value)} required  />
                         <input type="password" placeholder='senha' value={pwd} onChange={e =>setPwd(e.target.value)} required />
                         <input type="text" placeholder='nome'  value={name} onChange={e =>setName(e.target.value)} required  />
                         <input type="text" placeholder='fotos'  value = {photo} onChange={e =>setPhoto(e.target.value)} required  />

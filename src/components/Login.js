@@ -59,7 +59,7 @@ export default function Login(){
             {(disabled)?
                 <FormStyle enable ={false}>
                     <form>
-                        <input type="text"  placeholder='email' value={loginEmail} onChange={e => setLoginEmail(e.target.value)} disabled={true} />
+                        <input type="email"  placeholder='email' value={loginEmail} onChange={e => setLoginEmail(e.target.value)} disabled={true} />
                         <input type="password" placeholder='senha' value={loginPwd} onChange={e=> setLoginPwd((e.target.value))}  disabled ={true} />
                         <MainLoader>
                             <ThreeDots heigth="70" width="70" color="white" ariaLabel="loading" />
@@ -69,7 +69,7 @@ export default function Login(){
                 :
                 <FormStyle enable ={true}>
                     <form onSubmit={singIn}>
-                        <input type="text"  placeholder='email' value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required />
+                        <input type="email"  placeholder='email' value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required />
                         <input type="password" placeholder='senha' value={loginPwd} onChange={e=> setLoginPwd((e.target.value))}  required />
                         <button type='submit'> Entrar </button>
                     </form>
@@ -119,6 +119,7 @@ export const MainDiv = styled.div`
         line-height: 26px;
         text-align: center;
         color: #FFFFFF;
+        cursor: pointer;
     }
 
     h2{

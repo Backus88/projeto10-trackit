@@ -13,7 +13,7 @@ import 'dayjs/locale/pt-br';
 export default function Today(){
     // State that component update by get the information in the API everytime that a post occurs 
     const [habitControler, setHabitControler]= useState(false);
-    const [sequenceEqual, setSequenceEqual]= useState(false);
+    const [sequenceEqual, setSequenceEqual]= useState([]);
     const [habitData, SetHabitData]= useState([]);
     const {token, countHabitDone, setCountHabitDone} = useContext(MainContext);
     
@@ -37,14 +37,16 @@ export default function Today(){
     // Everytime that a post occurs this effect triggers
     useEffect(()=>{
         let count = 0
-        // setCountHabitDone(0);
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",config);
         promise.then((res)=>{
+            setSequenceEqual([...new Array(res.data.length).fill(false)]);
             SetHabitData(res.data);
-            res.data.map((item)=>{
+            res.data.map((item,index)=>{
                 const { done, currentSequence, highestSequence } = item;
                 if(currentSequence === highestSequence){
-                    setSequenceEqual(true);
+                    const newArr = [...sequenceEqual];
+                    newArr[index] = true;
+                    setSequenceEqual(newArr);
                 }
                 if(done){
                     count += 1;
@@ -113,7 +115,7 @@ export default function Today(){
                     const { id, name, done, currentSequence, highestSequence } = item;
                     return (
                         <TodayHabit key={index}>
-                            <ColumnDiv done={done} sequence={sequenceEqual}>
+                            <ColumnDiv done={done} sequence={sequenceEqual[index]}>
                                 <h1>{name}</h1>
                                 <h2>Sequência atual:  <span>{ currentSequence}{ (currentSequence ===1)? " dia": " dias" }</span> </h2>
                                 <h3>Seu recorde:  <span>{ highestSequence }{ (highestSequence ===1)? " dia": " dias" }</span></h3>
