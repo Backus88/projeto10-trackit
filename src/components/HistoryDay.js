@@ -34,7 +34,7 @@ export default function HistoryDay(){
                                 <h1>{name}</h1>
                             </ColumnDay>
                             <ButtonDay done={done} >
-                                <img src={ok} alt="eae" />
+                                {(done)? <img src={ok} alt="eae" /> : <ion-icon name="close-circle"></ion-icon>}
                             </ButtonDay>
                         </TodayHabit>
                     ) 
@@ -83,4 +83,11 @@ const ButtonDay = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    border: none;
+    ion-icon{
+        width: 69px;
+        height: 69px;
+        fill: red;
+        background: white;
+    }
 `
