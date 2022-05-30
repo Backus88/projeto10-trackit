@@ -83,8 +83,8 @@ export default function Habits (){
         const willDelete = window.confirm("Deseja mesmo deletar?")
         if(willDelete){
             const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
-            setGetController(!getController);
             promise.then(()=>{
+                setGetController(!getController);
             })
             promise.catch(()=>{
             })
